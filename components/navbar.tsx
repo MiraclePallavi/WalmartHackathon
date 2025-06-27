@@ -1,7 +1,8 @@
 import React from "react";
 
 import { Menu, ShoppingCart, User, Search, ChevronDown } from "lucide-react";
-import Input from "./ui/Input";
+import { Input } from "./Input";
+import Link from "next/link";
 export default function Navbar() {
   return (<>
           <nav className="bg-[#0071dc] text-white py-2 px-4 flex items-center justify-between">
@@ -27,10 +28,14 @@ export default function Navbar() {
             <span>Reorder</span>
             <span className="font-bold">My Items</span>
           </div>
+          <Link href="/sign-in">
           <div className="flex flex-col items-center hover:bg-blue-800 p-2 rounded-full cursor-pointer">
-            <span>Sign In</span>
+            
+            <span >Sign In</span>
             <span className="font-bold">Account</span>
+           
           </div>
+           </Link>
           <div className="relative">
             <ShoppingCart size={24} />
             <span className="absolute -top-1 -right-1 text-xs bg-yellow-400 text-black rounded-full px-1">0</span>
