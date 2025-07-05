@@ -16,5 +16,9 @@ export const signUpSchema = z.object({
 export const twinCreateSchema = z.object({
   title: z.string().min(3, "Title too short"),
   relationship: z.string().nonempty( "Please select a relationship"),
+  gender: z.string().nonempty( "Please select a gender"),
   description: z.string().min(10, "Description too short"),
+  dateOfBirth: z.date({
+    required_error: "Please select a date of birth",
+  }),
 });

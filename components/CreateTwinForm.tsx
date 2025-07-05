@@ -18,7 +18,8 @@ export default function CreateTwinForm() {
     defaultValues: {
       title: "",
       description: "",
-      relationship: "",
+      gender: "",
+      dateOfBirth: undefined as unknown as Date, 
     },
   });
 

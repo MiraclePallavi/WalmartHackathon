@@ -74,9 +74,21 @@ export default function TwinIdentity({
   form,
 }: {
   form: UseFormReturn<
-    { title: string; description: string; relationship: string },
+    {
+      title: string;
+      description: string;
+      relationship: string;
+      gender: string;
+      dateOfBirth?: Date | undefined;
+    },
     any,
-    { title: string; description: string ;relationship: string}
+    {
+      title: string;
+      description: string;
+      relationship: string;
+      gender: string;
+      dateOfBirth?: Date | undefined;
+    }
   >;
 }) {
   return (
@@ -88,8 +100,11 @@ export default function TwinIdentity({
         placeholder="What do you want to call this twin? E.g., “Dad”, “Campus Twin”, “Diya“"
         className={twinInputStyles}
       />
-      <div className="flex gap-4">
+      <div className="flex flex-wrapmd:flex-nowrap gap-4 w-full">
+        <div className="flex-1 w-full">
         <CustomSelect
+          control={form.control}
+          name="relationship"
           label="Relationship"
           placeholder="Select Relationship"
           className={twinInputStyles}
@@ -98,15 +113,27 @@ export default function TwinIdentity({
           professionalOptions={professionalOptions}
           otherOptions={otherOptions}
         />
-        <DatePicker className={twinInputStyles} />
+        </div>
+        <div className="flex-1">
+        <DatePicker
+          control={form.control}
+          name="dateOfBirth"
+          className={twinInputStyles}
+        />
+        </div>
+
+        <div className="flex-1">
         <CustomSelect
+          control={form.control}
+          name="gender"
           label="Gender"
           placeholder="Select Gender"
           className={twinInputStyles}
           genderOptions={genderOptions}
         />
+        </div>
       </div>
-      
+
       <TextareaWithLabel
         control={form.control}
         name="description"
