@@ -13,3 +13,8 @@ export const signUpSchema = z.object({
   password:    z.string().min(8),
 });
 
+export const twinCreateSchema = z.object({
+  title: z.string().min(3, "Title too short"),
+  relationship: z.string().nonempty( "Please select a relationship"),
+  description: z.string().min(10, "Description too short"),
+});
