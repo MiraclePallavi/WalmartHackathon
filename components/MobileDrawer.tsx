@@ -25,7 +25,7 @@ export default function MobileDrawer() {
               <div>Registries</div>
               <div className="flex justify-between">Departments</div>
               <div className="flex justify-between">Services</div>
-              <div>Give Feedback</div>
+              <div>Give feedback</div>
             </div>
           </div>
         </SheetContent>
