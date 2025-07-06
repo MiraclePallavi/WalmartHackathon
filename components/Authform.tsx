@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
  import {Loader2} from 'lucide-react';
+
 import {
   Form,
   FormControl,
@@ -38,7 +39,7 @@ export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
 
 const onSubmit = async () => {
   setLoading(true);
- 
+  router.push('/home')
 };
 
       
