@@ -1,11 +1,29 @@
+"use client";
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User, Search, ChevronDown } from "lucide-react";
 import MobileDrawer from "./MobileDrawer";
-
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect, useRef } from "react";
 export default function Homepage() {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+      dropdownRef.current &&
+      !(dropdownRef.current as HTMLDivElement).contains(event.target as Node)
+      ) {
+      setOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   return (
     <div className="font-sans bg-[#f5f6f6] min-h-screen">
       {/* Navbar */}
@@ -25,7 +43,6 @@ export default function Homepage() {
           </div>
         </div>
 
-        {/* Search Bar */}
         <div className="flex items-center w-full md:w-1/2 bg-white rounded-full overflow-hidden">
           <Input
             type="text"
@@ -37,17 +54,40 @@ export default function Homepage() {
           </button>
         </div>
 
-        {/* User options - visible on md and up */}
         <div className="hidden md:flex items-center gap-6 text-xs">
           <div className="flex flex-col items-center">
             <span>Reorder</span>
             <span className="font-bold">My Items</span>
           </div>
 
-          <div className="flex flex-col items-center hover:bg-blue-800 p-2 rounded-full cursor-pointer">
-            <span className="font-bold">Account</span>
-          </div>
+          <div className="relative inline-block text-left" ref={dropdownRef}>
+      <div
+        className="flex flex-col items-center hover:bg-blue-800 p-2 rounded-full cursor-pointer"
+        onClick={() => setOpen(!open)}
+      >
+        <Image
+          src="/profileIcon.svg"
+          alt="Profile"
+          width={40}
+          height={40}
+          className="rounded-full"
+        />
+        <span className="text-white text-sm mt-1">Profile</span>
+      </div>
 
+      {open && (
+        <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50">
+          <ul className="py-2 text-gray-700">
+            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">View Profile</li>
+            <Link href="/twin/create">
+              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Create Twin</li>
+            </Link>
+            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Settings</li>
+            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Logout</li>
+          </ul>
+        </div>
+      )}
+    </div>
           <div className="relative">
             <ShoppingCart size={24} />
             <span className="absolute -top-1 -right-1 text-xs bg-yellow-400 text-black rounded-full px-1">
