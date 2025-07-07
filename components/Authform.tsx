@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
  import {Loader2} from 'lucide-react';
-
+import { SignIn, SignUp, getloggedInUser } from "@/lib/action/users.action";
 import {
   Form,
   FormControl,
@@ -23,13 +23,8 @@ export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
 
   const router = useRouter()
     const [user, setuser] = useState<any>(null);
-    const [isLoading, setLoading]= useState(false);
-
-  
-
-  
+    const [isLoading, setLoading]= useState(false); 
     const formSchema = type === "sign-in" ? signInSchema : signUpSchema;
-
 
   const form = useForm<z.infer<typeof signInSchema | typeof signUpSchema>>({
   resolver: zodResolver(type === "sign-in" ? signInSchema : signUpSchema),
@@ -37,9 +32,32 @@ export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
 });
 
 
-const onSubmit = async () => {
+const onSubmit = async (data: z.infer<typeof signInSchema | typeof signUpSchema>) => {
   setLoading(true);
-  router.push('/home')
+  try {
+    if (type === "sign-in") {
+      await SignIn({ email: data.email, password: data.password });
+      setuser(await getloggedInUser());
+      router.push("/home");
+      
+    } else {
+      const signUpData = data as z.infer<typeof signUpSchema>;
+      await SignUp({
+       
+        firstName: signUpData.firstName,
+        lastName: signUpData.lastName,
+        phone: signUpData.phone,
+        email: signUpData.email,
+        password: signUpData.password,
+      });
+      setuser(await getloggedInUser());
+      router.push("/home");
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
 };
 
       
