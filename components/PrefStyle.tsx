@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+"use client";
+import React from "react";
+import { useController, Control } from "react-hook-form";
 import CustomTags from "./Tags";
 import { CustomSlider } from "./CustomSlider";
 import MultiSelectColorDropdown from "./SelectColor";
+import { TwinFullInput } from "@/lib/validation";
 
-const interestsHobbiesTags = [
-  "Fitness",
+interface PrefStyleProps {
+  control: Control<TwinFullInput>;
+}
+
+const interestsHobbiesTags = [   "Fitness",
   "Music",
   "Art",
   "Reading",
@@ -17,11 +23,8 @@ const interestsHobbiesTags = [
   "Gaming",
   "Movies/TV Shows",
   "Anime",
-  "Travel",
-];
-
-const personalityVibeTags = [
-  "Minimalist",
+  "Travel",];
+const personalityVibeTags = [   "Minimalist",
   "Bold",
   "Trendy",
   "Classy",
@@ -52,61 +55,53 @@ const personalityVibeTags = [
   "Traditional",
   "High-energy",
   "Introverted",
-  "Extroverted",
-];
+  "Extroverted", ];
 
-function PrefStyle() {
-  const [budget, setBudget] = useState<number[]>([2000]) 
-  const [favoriteColors, setFavoriteColors] = useState<string[]>([])
+export default function PrefStyle({ control }: PrefStyleProps) {
+  const { field: { value: interests, onChange: setInterests } } = useController({
+    name: "interestsHobbies",
+    control,
+    defaultValue: [],
+  });
 
-  const [selectedInterestsHobbies, setSelectedInterestsHobbies] = useState<
-    string[]
-  >([]);
+  const { field: { value: vibes, onChange: setVibes } } = useController({
+    name: "personalityVibe",
+    control,
+    defaultValue: [],
+  });
 
-  const handleTagToggle = (tag: string) => {
-    setSelectedInterestsHobbies((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
-  const [selectedPersonalityVibe, setSelectedPersonalityVibe] = useState<
-  string[]
->([]);
+  const { field: { value: budget, onChange: setBudget } } = useController({
+    name: "budgetRange",
+    control,
+    defaultValue: [0, 5000],
+  });
 
-const handleTagTogglePV = (tag: string) => {
-  setSelectedPersonalityVibe((prev) =>
-    prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-  );
-};
+  // We don’t need to grab colors here — the dropdown does that itself.
 
+  const toggle = (list: string[], tag: string, cb: (arr: string[]) => void) =>
+    cb(list.includes(tag) ? list.filter((t) => t !== tag) : [...list, tag]);
 
- 
   return (
     <>
-      <div className="flex font-bold">Interests/Hobbies</div>
+      <div className="font-bold">Interests / Hobbies</div>
       <CustomTags
         tags={interestsHobbiesTags}
-        selectedTags={selectedInterestsHobbies}
-        onTagToggle={handleTagToggle}
+        selectedTags={interests}
+        onTagToggle={(t) => toggle(interests, t, setInterests)}
       />
-      <div className="flex font-bold">Preferred Budget Range</div>
-      <CustomSlider
-        value={budget}
-        onValueChange={(val) => setBudget(val)}
-      />
-      <div className="flex font-bold">Personality/Vibe</div>
+
+      <div className="font-bold mt-4">Preferred Budget Range</div>
+      <CustomSlider value={budget} onValueChange={setBudget} />
+
+      <div className="font-bold mt-4">Personality / Vibe</div>
       <CustomTags
         tags={personalityVibeTags}
-        selectedTags={selectedPersonalityVibe}
-        onTagToggle={handleTagTogglePV}
+        selectedTags={vibes}
+        onTagToggle={(t) => toggle(vibes, t, setVibes)}
       />
-      <div className="flex font-bold gap-4 items-center">Favorite Colors
-      <MultiSelectColorDropdown
-        selectedColors={favoriteColors}
-        setSelectedColors={setFavoriteColors}
-      />
-      </div>
+
+      <div className="font-bold mt-4">Favorite Colors</div>
+      <MultiSelectColorDropdown control={control} name="favoriteColors" />
     </>
   );
 }
-
-export default PrefStyle;

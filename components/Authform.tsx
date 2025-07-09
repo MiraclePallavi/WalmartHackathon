@@ -107,7 +107,7 @@ const onSubmit = async (data: z.infer<typeof signInSchema | typeof signUpSchema>
               <Custominput
                 control={form.control}
                 name="password"
-                label="Create a Password"
+                label="Enter Password"
                 placeholder="Enter password"
                
                 className="bg-[#16202B] text-white rounded-xl placeholder-yellow-400"

@@ -1,15 +1,14 @@
-import * as React from "react"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+"use client";
+import React from "react";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { useController, Control } from "react-hook-form";
+import { TwinFullInput } from "@/lib/validation";
 
-const colorOptions = [
-  "Multicolor", "Silver", "Gold", "White", "Black", "Yellow",
+const colorOptions = ["Multicolor", "Silver", "Gold", "White", "Black", "Yellow",
   "Blue", "Red", "Pink", "Green", "Brown", "Purple", "Gray",
-  "Clear", "Orange", "Beige", "Other", "Off-White", "Assorted", "Bronze"
-]
-
+  "Clear", "Orange", "Beige", "Other", "Off-White", "Assorted", "Bronze"];
 const colorMap: Record<string, string> = {
   Multicolor: "linear-gradient(45deg, red, yellow, green, blue)",
   Silver: "#C0C0C0",
@@ -33,56 +32,44 @@ const colorMap: Record<string, string> = {
   Bronze: "#CD7F32"
 }
 
+interface MultiSelectColorDropdownProps {
+  control: Control<TwinFullInput>;
+  name: "favoriteColors";
+}
+
 export default function MultiSelectColorDropdown({
-  selectedColors,
-  setSelectedColors
-}: {
-  selectedColors: string[]
-  setSelectedColors: (colors: string[]) => void
-}) {
-  const toggleColor = (color: string) => {
-    if (selectedColors.includes(color)) {
-      setSelectedColors(selectedColors.filter((c) => c !== color))
-    } else {
-      setSelectedColors([...selectedColors, color])
-    }
-  }
+  control,
+  name,
+}: MultiSelectColorDropdownProps) {
+  const { field: { value = [], onChange } } = useController({
+    name,
+    control,
+    defaultValue: [],
+  });
+
+  const toggle = (c: string) =>
+    onChange(value.includes(c) ? value.filter((x) => x !== c) : [...value, c]);
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" className="w-[250px] justify-between">
-          {selectedColors.length > 0
-            ? `${selectedColors.length} selected`
-            : "Select favorite colors"}
+          {value.length ? `${value.length} selected` : "Select favorite colors"}
           <span className="ml-auto text-sm text-muted-foreground">▼</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] max-h-[250px] overflow-y-auto">
-        <div className="flex flex-col gap-2">
-          {colorOptions.map((color) => (
-            <label
-              key={color}
-              className="flex items-center gap-3 text-sm cursor-pointer"
-            >
-              <Checkbox
-                checked={selectedColors.includes(color)}
-                onCheckedChange={() => toggleColor(color)}
-              />
-              <span
-                className="w-4 h-4 rounded-full border border-gray-400"
-                style={{
-                  background:
-                    color === "Multicolor"
-                      ? colorMap[color]
-                      : colorMap[color] || "#ccc"
-                }}
-              />
-              {color}
-            </label>
-          ))}
-        </div>
+      <PopoverContent className="max-h-[250px] overflow-y-auto w-[250px]">
+        {colorOptions.map((c) => (
+          <label key={c} className="flex items-center gap-3 text-sm cursor-pointer">
+            <Checkbox checked={value.includes(c)} onCheckedChange={() => toggle(c)} />
+            <span
+              className="w-4 h-4 rounded-full border border-gray-400"
+              style={{ background: colorMap[c] ?? "#ccc" }}
+            />
+            {c}
+          </label>
+        ))}
       </PopoverContent>
     </Popover>
-  )
+  );
 }

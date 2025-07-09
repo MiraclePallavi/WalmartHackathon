@@ -13,12 +13,19 @@ export const signUpSchema = z.object({
   password:    z.string().min(8),
 });
 
-export const twinCreateSchema = z.object({
-  title: z.string().min(3, "Title too short"),
-  relationship: z.string().nonempty( "Please select a relationship"),
-  gender: z.string().nonempty( "Please select a gender"),
-  description: z.string().min(10, "Description too short"),
-  dateOfBirth: z.date({
-    required_error: "Please select a date of birth",
-  }),
+export const twinFullSchema = z.object({
+  title: z.string().min(3),
+  description: z.string().min(3),
+  relationship: z.string().nonempty(),
+  gender: z.string().nonempty(),
+  dateOfBirth: z.coerce.date().optional(),
+  interestsHobbies: z.array(z.string()).min(1),
+  budgetRange: z
+    .tuple([z.number().min(0), z.number().min(0)])
+    .refine(([min, max]) => min <= max, { message: "Min must be ≤ max" }),
+  personalityVibe: z.array(z.string()).min(1),
+  favoriteColors: z.array(z.string()).optional(),
+  isGiftingTwin: z.boolean(),
 });
+
+export type TwinFullInput = z.infer<typeof twinFullSchema>;

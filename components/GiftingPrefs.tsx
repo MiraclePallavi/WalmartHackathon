@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+"use client";
+import React from "react";
+import { useController, Control } from "react-hook-form";
 import { CustomSwitch } from "./CustomSwitch";
+import { TwinFullInput } from "@/lib/validation";
 
-
-function GiftingPref() {
-  
-  return (
-    <>
-     <CustomSwitch/>
-    </>
-  );
+interface GiftingPrefProps {
+  control: Control<TwinFullInput>;
 }
 
-export default GiftingPref;
+export default function GiftingPref({ control }: GiftingPrefProps) {
+  const { field: { value: isGifting, onChange } } = useController({
+    name: "isGiftingTwin",
+    control,
+    defaultValue: false,
+  });
+
+  return <CustomSwitch checked={isGifting} onCheckedChange={onChange} />;
+}

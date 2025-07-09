@@ -2,6 +2,7 @@
 import { z } from "zod";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TwinFullInput } from "@/lib/validation";
 import {
   Form,
   FormField,
@@ -14,11 +15,6 @@ import Custominput from "@/components/customInputField";
 import CustomSelect from "./Select";
 import { DatePicker } from "./date-picker";
 import { TextareaWithLabel } from "./Textarea";
-
-// const twinCreateSchema = z.object({
-//   title: z.string().min(3, "Title too short"),
-//   description: z.string().min(10, "Description too short"),
-// });
 
 const twinInputStyles =
   "rounded-sm bg-white text-black border-black focus:border-black focus:border-3 focus-visible:ring-0 focus-visible:border-black mt-1";
@@ -73,23 +69,7 @@ const genderOptions = [
 export default function TwinIdentity({
   form,
 }: {
-  form: UseFormReturn<
-    {
-      title: string;
-      description: string;
-      relationship: string;
-      gender: string;
-      dateOfBirth?: Date | undefined;
-    },
-    any,
-    {
-      title: string;
-      description: string;
-      relationship: string;
-      gender: string;
-      dateOfBirth?: Date | undefined;
-    }
-  >;
+ form: UseFormReturn<TwinFullInput>; 
 }) {
   return (
     <>
@@ -134,7 +114,7 @@ export default function TwinIdentity({
         </div>
       </div>
 
-      <TextareaWithLabel
+      <Custominput
         control={form.control}
         name="description"
         label="Description"
