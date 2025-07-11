@@ -1,7 +1,7 @@
 import {twinFullSchema} from "@/lib/validation";
 import { Twin } from "@/models/twinform";
 import {NextResponse, NextRequest} from "next/server";
-import { connect } from "@/dbConfig/dbConfig";
+import { connect } from "@/dbConfig";
 import {cookies} from "next/headers";
 import {createSessionClient} from "@/lib/appwrite";
 

@@ -17,11 +17,14 @@ if (!global.mongooseCached) {
 
 export async function connect() {
   if (global.mongooseCached.conn) {
+    
+
     return global.mongooseCached.conn;
   }
   if (!global.mongooseCached.promise) {
     global.mongooseCached.promise = mongoose
       .connect(MONGO_URI)
+      
       .then((m) => (global.mongooseCached.conn = m));
   }
   await global.mongooseCached.promise;
