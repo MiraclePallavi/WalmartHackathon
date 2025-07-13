@@ -12,7 +12,7 @@ const TwinSchema = new Schema({
   personalityVibe:  { type: [String], required: true },
   favoriteColors:   { type: [String], default: [] },
   isGiftingTwin:    { type: Boolean, default: false },
-
+  userId: { type: String, required: true },
   createdAt:       { type: Date, default: () => new Date() },
 });
 
