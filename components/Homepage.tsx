@@ -17,12 +17,36 @@ export default function Homepage() {
   const dropdownRef = useRef(null);
   const [twins, setTwins] = useState<TwinSummary[]>([]);
   
-    useEffect(() => {
-      fetch("/api/twins")
-        .then((res) => res.json())
-        .then((data: TwinSummary[]) => setTwins(data))
-        .catch(console.error);
-    }, []);
+     useEffect(() => {
+  fetch("/api/twins", {
+    credentials: "include"          
+  })
+    .then((res) => {
+      if (!res.ok) {
+        console.error("twins fetch failed:", res.status);
+        return [];
+      }
+      return res.json();
+    })
+    .then((data: TwinSummary[]) => {
+      setTwins(data);
+    })
+    .catch(console.error);
+}, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+      dropdownRef.current &&
+      !(dropdownRef.current as HTMLDivElement).contains(event.target as Node)
+      ) {
+      setOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
