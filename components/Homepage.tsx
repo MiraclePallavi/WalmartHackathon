@@ -8,9 +8,21 @@ import MobileDrawer from "./MobileDrawer";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+interface TwinSummary {
+  _id: string;
+  title: string;
+}
 export default function Homepage() {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [twins, setTwins] = useState<TwinSummary[]>([]);
+  
+    useEffect(() => {
+      fetch("/api/twins")
+        .then((res) => res.json())
+        .then((data: TwinSummary[]) => setTwins(data))
+        .catch(console.error);
+    }, []);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -88,6 +100,27 @@ export default function Homepage() {
         </div>
       )}
     </div>
+    <div className="relative group">
+            <button className="flex items-center gap-1 px-3 py-2 bg-blue-800 hover:bg-blue-900 rounded">
+              Shop for…
+              <ChevronDown size={12} />
+            </button>
+            <div className="absolute right-0 mt-1 w-48 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10">
+              {twins.length === 0 ? (
+                <div className="p-2 text-sm">No twins yet</div>
+              ) : (
+                twins.map((t) => (
+                  <Link
+                    key={t._id}
+                    href={`/twins/${t._id}`}
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    {t.title}
+                  </Link>
+                ))
+              )}
+            </div>
+          </div>
           <div className="relative">
             <ShoppingCart size={24} />
             <span className="absolute -top-1 -right-1 text-xs bg-yellow-400 text-black rounded-full px-1">
