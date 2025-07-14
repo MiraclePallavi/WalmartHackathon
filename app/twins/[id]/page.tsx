@@ -13,6 +13,10 @@ interface Twin {
   relationship: string;
   gender: string;
   dateOfBirth?: string;
+  interestsHobbies: string[];
+  budgetRange: [number, number];
+  personalityVibe: string[];
+  favoriteColors: string[];
 }
 
 interface Recommendation {
@@ -54,34 +58,90 @@ export default function TwinDashboard() {
   if (!twin) return <p className="text-center text-red-500 mt-10">Twin not found.</p>;
 
   return (
-    <div className="px-6 py-10 max-w-6xl mx-auto">
-      {/* Header Section */}
-     <h1 className="text-3xl font-bold text-blue-800">
-  Twin Profile: {twin.title} 
-</h1>
-<p className="text-gray-600">Here are recommendations curated for {twin.title}.</p>
+    <div className="px-6 py-10 max-w-6xl mx-auto space-y-10">
+      {/* Header */}
+      
+      <div className="space-y-1">
+        <h1 className="text-3xl font-bold text-blue-800">Twin Profile: {twin.title}</h1>
+        <p className="text-gray-600">Here are recommendations curated for {twin.title}.</p>
+      </div>
 
-
-      {/* Twin Info Section */}
-      <div className="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 rounded-lg p-6 shadow-inner mb-10">
+      {/* Twin Info */}
+      <div className="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 rounded-lg p-6 shadow-inner space-y-4 ">
         <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-700">
-          <p><span className="font-semibold">Relationship:</span> {twin.relationship}</p>
-          <p><span className="font-semibold">Gender:</span> {twin.gender}</p>
+          <p>
+            <span className="font-semibold">Relationship:</span> {twin.relationship}
+          </p>
+          <p>
+            <span className="font-semibold">Gender:</span> {twin.gender}
+          </p>
           {twin.dateOfBirth && (
             <p>
-              <span className="font-semibold">Date of Birth:</span>{" "}
+              <span className="font-semibold">DOB:</span>{" "}
               {new Date(twin.dateOfBirth).toLocaleDateString()}
             </p>
           )}
-          <p className="sm:col-span-2">
-            <span className="font-semibold">Description:</span> {twin.description}
+          <p>
+            <span className="font-semibold">Budget Range:</span>{" "}
+            ${twin.budgetRange[0]} — ${twin.budgetRange[1]}
           </p>
+        </div>
+
+        {/* Arrays */}
+        <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-700">
+        <div className="space-y-3">
+          <div>
+            <span className="font-semibold">Interests / Hobbies:</span>
+            <div className="mt-1 flex flex-wrap gap-2">
+              {twin.interestsHobbies.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span className="font-semibold">Personality / Vibe:</span>
+            <div className="mt-1 flex flex-wrap gap-2">
+              {twin.personalityVibe.map((v) => (
+                <span
+                  key={v}
+                  className="text-xs bg-purple-200 text-purple-800 px-2 py-1 rounded-full"
+                >
+                  {v}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <span>
+            <span className="font-semibold">Favorite Colors:</span>
+            <div className="mt-1 flex flex-wrap gap-2">
+              {twin.favoriteColors.map((c) => (
+                <span
+                  key={c}
+                  className="w-5 h-5 border rounded-full"
+                  style={{ backgroundColor: c.toLowerCase() }}
+                  title={c}
+                />
+              ))}
+            </div>
+          </span>
+</div>
+          <span>
+            <span className="font-semibold">Description:</span>
+            <p className="mt-1 text-gray-800">{twin.description}</p>
+          </span>
         </div>
       </div>
 
       {/* Recommendations */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-4 text-gray-800">🛍️ Recommended Products</h2>
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-800">🛍️ Recommended Products</h2>
         {recs.length === 0 ? (
           <p className="text-gray-500">No recommendations found for this twin.</p>
         ) : (
