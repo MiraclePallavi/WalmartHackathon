@@ -14,7 +14,6 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   const user = await account.get();
 
   await connect();
-  // ensure the twin belongs to that user
   const twin = await Twin.findOne({ _id: params.id, userId: user.$id }).lean();
   if (!twin) {
     return NextResponse.json({ error: "Twin not found" }, { status: 404 });

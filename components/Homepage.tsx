@@ -124,27 +124,31 @@ export default function Homepage() {
         </div>
       )}
     </div>
-    <div className="relative group">
-            <button className="flex items-center gap-1 px-3 py-2 bg-blue-800 hover:bg-blue-900 rounded">
-              Shop for…
-              <ChevronDown size={12} />
-            </button>
-            <div className="absolute right-0 mt-1 w-48 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              {twins.length === 0 ? (
-                <div className="p-2 text-sm">No twins yet</div>
-              ) : (
-                twins.map((t) => (
-                  <Link
-                    key={t._id}
-                    href={`/twins/${t._id}`}
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    {t.title}
-                  </Link>
-                ))
-              )}
-            </div>
-          </div>
+   <div className="relative group inline-block">
+  <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-700 to-blue-900 hover:from-blue-800 hover:to-blue-950 text-white font-medium rounded-lg shadow transition-all duration-200">
+    Shop for…
+    <ChevronDown size={16} className="transition-transform duration-200 group-hover:rotate-180" />
+  </button>
+
+  <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 rounded-lg shadow-xl ring-1 ring-black/5 z-20 opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100 transform origin-top-right transition-all duration-200">
+    {twins.length === 0 ? (
+      <div className="p-3 text-sm text-center text-gray-500">No twins yet</div>
+    ) : (
+      <ul className="divide-y divide-gray-200">
+        {twins.map((t) => (
+          <li key={t._id}>
+            <Link
+              href={`/twins/${t._id}`}
+              className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors duration-150"
+            >
+              {t.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</div>
           <div className="relative">
             <ShoppingCart size={24} />
             <span className="absolute -top-1 -right-1 text-xs bg-yellow-400 text-black rounded-full px-1">
