@@ -1,5 +1,7 @@
 # 🛒 TwinCart
 
+[![Watch the video](https://img.shields.io/badge/Watch%20Demo-YouTube-red?logo=youtube)](https://youtu.be/lsYnPlwjhNQ?si=uagE6QT0q2b1v4iq)
+
 **TwinCart** is a smarter, more personal shopping assistant designed for people who don’t just shop for themselves — but also for friends, family, partners, or anyone they care about.
 
 With TwinCart, users can create “twin” profiles of the people they shop for regularly, and receive AI-powered, personalized product recommendations tailored to each twin’s preferences.
